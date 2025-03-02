@@ -953,6 +953,57 @@
             margin-left: 10px;
         }
 
+        /* Products Display Options */
+        .products-display-options {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 10px 20px;
+            background-color: var(--gray-bg);
+        }
+
+        .products-display-options label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+
+        .products-display-options select {
+            padding: 5px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 14px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px 20px;
+        }
+
+        .pagination button {
+            background-color: var(--button-bg);
+            color: var(--secondary-color);
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .pagination button:hover {
+            background-color: var(--button-hover);
+        }
+
+        .pagination button.active {
+            background-color: var(--button-hover);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .banner {
@@ -986,6 +1037,11 @@
 
             .product-details-content img {
                 height: 200px;
+            }
+
+            .products-display-options {
+                flex-direction: column;
+                gap: 10px;
             }
         }
     </style>
@@ -1101,7 +1157,27 @@
     </div>
 
     <div class="container">
-        <div class="products">
+        <div class="products-display-options">
+            <div>
+                <label for="items-per-page">عدد المنتجات في الصفحة:</label>
+                <select id="items-per-page">
+                    <option value="4">4</option>
+                    <option value="6" selected>6</option>
+                    <option value="8">8</option>
+                    <option value="12">12</option>
+                </select>
+            </div>
+            <div>
+                <label for="columns-per-row">عدد الأعمدة:</label>
+                <select id="columns-per-row">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3" selected>3</option>
+                    <option value="4">4</option>
+                </select>
+            </div>
+        </div>
+        <div class="products" id="products-container">
             <div class="product-card" data-name="شنطة De Vente" data-price="1250">
                 <img src="https://i.imgur.com/IeH7hX1.jpeg" alt="شنطة De Vente">
                 <div class="product-info">
@@ -1181,6 +1257,7 @@
                 </div>
             </div>
         </div>
+        <div class="pagination" id="pagination"></div>
     </div>
 
     <div class="recommendations">
@@ -1250,10 +1327,7 @@
         // Toggle Categories Sidebar
         const categoryToggle = document.querySelector('.category-toggle');
         const categories = document.querySelector('.categories');
-
-        categoryToggle.addEventListener('click', () => {
-            categories.classList.toggle('open');
-        });
+        categoryToggle.addEventListener('click', () => categories.classList.toggle('open'));
 
         // Search Functionality
         const searchIcon = document.querySelector('.search-icon');
@@ -1277,15 +1351,15 @@
         searchInput.addEventListener('input', () => {
             const query = searchInput.value.trim().toLowerCase();
             searchResults.innerHTML = '';
-
             if (query === '') {
                 searchResults.classList.remove('active');
+                updateProductsDisplay();
                 return;
             }
 
             const products = document.querySelectorAll('.product-card');
             let hasResults = false;
-
+            searchResults.innerHTML = '';
             products.forEach(product => {
                 const productName = product.dataset.name.toLowerCase();
                 if (productName.includes(query)) {
@@ -1297,25 +1371,28 @@
                         searchBar.classList.remove('open');
                         searchInput.value = '';
                         searchResults.classList.remove('active');
+                        updateProductsDisplay();
                     });
                     searchResults.appendChild(resultItem);
                     hasResults = true;
                 }
             });
 
-            if (hasResults) {
-                searchResults.classList.add('active');
-            } else {
-                searchResults.classList.remove('active');
+            searchResults.classList.toggle('active', hasResults);
+            if (!hasResults) {
                 const noResult = document.createElement('div');
                 noResult.classList.add('result-item');
                 noResult.textContent = 'لم يتم العثور على منتجات';
                 searchResults.appendChild(noResult);
                 searchResults.classList.add('active');
             }
+
+            document.querySelector('#products-container').innerHTML = '';
+            document.querySelector('#pagination').innerHTML = '';
         });
 
-        // Toggle Cart Modal
+        // Cart Functionality
+        let cart = {};
         const cartIcon = document.querySelector('.cart-icon');
         const cartModal = document.querySelector('#cart-modal');
         const closeModal = document.querySelector('#close-modal');
@@ -1325,12 +1402,7 @@
             updateCartModal();
         });
 
-        closeModal.addEventListener('click', () => {
-            cartModal.classList.remove('open');
-        });
-
-        // Cart Functionality
-        let cart = {};
+        closeModal.addEventListener('click', () => cartModal.classList.remove('open'));
 
         document.querySelectorAll('.add-to-chart').forEach(button => {
             button.addEventListener('click', function() {
@@ -1343,7 +1415,6 @@
                 } else {
                     cart[productName] = { price: productPrice, quantity: 1 };
                 }
-
                 updateCartCount();
                 alert(`تمت إضافة "${productName}" إلى السلة بقيمة ${productPrice} جنيه!`);
             });
@@ -1358,7 +1429,6 @@
             });
         });
 
-        // Update Cart Count
         function updateCartCount() {
             const cartIcon = document.querySelector('.cart-icon');
             const totalItems = Object.values(cart).reduce((sum, item) => sum + item.quantity, 0);
@@ -1366,22 +1436,17 @@
             saveUserData();
         }
 
-        // Update Cart Modal
         function updateCartModal() {
             const cartItems = document.querySelector('.cart-items');
             const totalPriceElement = document.querySelector('#total-price');
             cartItems.innerHTML = '';
-
             let totalPrice = 0;
 
             for (let [name, { price, quantity }] of Object.entries(cart)) {
-                const productCard = document.querySelector(`.product-card[data-name="${name}"]`);
-                const imageSrc = productCard ? productCard.querySelector('img').src : 'default-image.jpg'; // صورة افتراضية إذا لم يتم العثور على المنتج
+                const productCard = Array.from(document.querySelectorAll('.product-card')).find(card => card.dataset.name === name);
+                const imageSrc = productCard ? productCard.querySelector('img').src : 'default-image.jpg';
                 const li = document.createElement('li');
-                li.innerHTML = `
-                    <img src="${imageSrc}" alt="${name}">
-                    <span>${name} - ${price} جنيه (القطع: ${quantity})</span>
-                `;
+                li.innerHTML = `<img src="${imageSrc}" alt="${name}"><span>${name} - ${price} جنيه (القطع: ${quantity})</span>`;
                 cartItems.appendChild(li);
                 totalPrice += price * quantity;
             }
@@ -1389,7 +1454,6 @@
             totalPriceElement.textContent = totalPrice;
         }
 
-        // Buy Now Button in Modal
         document.querySelector('.buy-now-btn').addEventListener('click', () => {
             if (Object.keys(cart).length === 0) {
                 alert('السلة فارغة!');
@@ -1400,13 +1464,22 @@
                 message += `${name} - ${price} جنيه (الكمية: ${quantity})\n`;
             }
             message += `إجمالي الفاتورة: ${document.querySelector('#total-price').textContent} جنيه`;
-            const encodedMessage = encodeURIComponent(message);
-            window.location.href = `https://wa.me/2001064322555?text=${encodedMessage}`;
+            window.location.href = `https://wa.me/2001064322555?text=${encodeURIComponent(message)}`;
             cartModal.classList.remove('open');
         });
 
         // Favorites Functionality
         let favorites = {};
+        const favoritesIcon = document.querySelector('.favorites-icon');
+        const favoritesModal = document.querySelector('#favorites-modal');
+        const closeFavorites = document.querySelector('#close-favorites');
+
+        favoritesIcon.addEventListener('click', () => {
+            favoritesModal.classList.add('open');
+            updateFavoritesModal();
+        });
+
+        closeFavorites.addEventListener('click', () => favoritesModal.classList.remove('open'));
 
         document.querySelectorAll('.like-btn').forEach(button => {
             button.addEventListener('click', function() {
@@ -1424,21 +1497,6 @@
             });
         });
 
-        // Toggle Favorites Modal
-        const favoritesIcon = document.querySelector('.favorites-icon');
-        const favoritesModal = document.querySelector('#favorites-modal');
-        const closeFavorites = document.querySelector('#close-favorites');
-
-        favoritesIcon.addEventListener('click', () => {
-            favoritesModal.classList.add('open');
-            updateFavoritesModal();
-        });
-
-        closeFavorites.addEventListener('click', () => {
-            favoritesModal.classList.remove('open');
-        });
-
-        // Update Favorites Count
         function updateFavoritesCount() {
             const favoritesIcon = document.querySelector('.favorites-icon');
             const totalFavorites = Object.keys(favorites).length;
@@ -1446,19 +1504,15 @@
             saveUserData();
         }
 
-        // Update Favorites Modal
         function updateFavoritesModal() {
             const favoritesItems = document.querySelector('.favorites-items');
             favoritesItems.innerHTML = '';
 
             for (let productName of Object.keys(favorites)) {
-                const productCard = document.querySelector(`.product-card[data-name="${productName}"]`);
-                const imageSrc = productCard ? productCard.querySelector('img').src : 'default-image.jpg'; // صورة افتراضية إذا لم يتم العثور على المنتج
+                const productCard = Array.from(document.querySelectorAll('.product-card')).find(card => card.dataset.name === productName);
+                const imageSrc = productCard ? productCard.querySelector('img').src : 'default-image.jpg';
                 const li = document.createElement('li');
-                li.innerHTML = `
-                    <img src="${imageSrc}" alt="${productName}">
-                    <span>${productName}</span>
-                `;
+                li.innerHTML = `<img src="${imageSrc}" alt="${productName}"><span>${productName}</span>`;
                 favoritesItems.appendChild(li);
             }
 
@@ -1565,18 +1619,14 @@
         const userName = document.querySelector('#user-name');
         const userEmail = document.querySelector('#user-email');
 
-        if (currentUser) {
-            loadUserData();
-        }
+        if (currentUser) loadUserData();
 
         loginIcon.addEventListener('click', () => {
             userModal.classList.add('open');
             updateUserModal();
         });
 
-        closeUser.addEventListener('click', () => {
-            userModal.classList.remove('open');
-        });
+        closeUser.addEventListener('click', () => userModal.classList.remove('open'));
 
         showSignup.addEventListener('click', (e) => {
             e.preventDefault();
@@ -1705,6 +1755,150 @@
             document.body.classList.toggle('dark-mode');
             localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
         });
+
+        // Products Display Options and Pagination
+        const itemsPerPageSelect = document.querySelector('#items-per-page');
+        const columnsPerRowSelect = document.querySelector('#columns-per-row');
+        const productsContainer = document.querySelector('#products-container');
+        const paginationContainer = document.querySelector('#pagination');
+        let currentPage = 1;
+
+        itemsPerPageSelect.addEventListener('change', () => {
+            currentPage = 1;
+            updateProductsDisplay();
+        });
+
+        columnsPerRowSelect.addEventListener('change', () => {
+            currentPage = 1;
+            updateProductsDisplay();
+        });
+
+        function updateProductsDisplay() {
+            const itemsPerPage = parseInt(itemsPerPageSelect.value);
+            const columnsPerRow = parseInt(columnsPerRowSelect.value);
+            const allProducts = Array.from(document.querySelectorAll('.product-card'));
+            const totalItems = allProducts.length;
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+            productsContainer.style.gridTemplateColumns = `repeat(${columnsPerRow}, minmax(250px, 1fr))`;
+
+            allProducts.forEach(product => product.style.display = 'none');
+
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = Math.min(start + itemsPerPage, totalItems);
+            for (let i = start; i < end; i++) {
+                allProducts[i].style.display = 'block';
+            }
+
+            paginationContainer.innerHTML = '';
+            for (let i = 1; i <= totalPages; i++) {
+                const button = document.createElement('button');
+                button.textContent = i;
+                if (i === currentPage) button.classList.add('active');
+                button.addEventListener('click', () => {
+                    currentPage = i;
+                    updateProductsDisplay();
+                });
+                paginationContainer.appendChild(button);
+            }
+        }
+
+        // Initial display
+        updateProductsDisplay();
+
+        // Rebind events after display update
+        function rebindProductEvents() {
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.removeEventListener('click', handleProductClick);
+                card.addEventListener('click', handleProductClick);
+            });
+        }
+
+        function handleProductClick(e) {
+            if (e.target.closest('.buttons')) return;
+
+            const productModal = document.querySelector('#product-details-modal');
+            const productImage = document.querySelector('#product-details-image');
+            const productName = document.querySelector('#product-details-name');
+            const productPrice = document.querySelector('#product-details-price');
+            const productDiscount = document.querySelector('#product-details-discount');
+            const productSold = document.querySelector('#product-details-sold');
+            const productLikes = document.querySelector('#product-details-likes');
+            const productReviews = document.querySelector('#product-details-reviews');
+            const addToCartBtn = document.querySelector('#product-details-add-to-cart');
+            const buyNowBtn = document.querySelector('#product-details-buy-now');
+            const likeBtn = document.querySelector('#product-details-like');
+
+            const name = this.dataset.name;
+            const price = this.dataset.price;
+            const imageSrc = this.querySelector('img').src;
+            const reviews = this.querySelector('.reviews').textContent;
+
+            const discount = Math.floor(Math.random() * 20) + 1;
+            const sold = Math.floor(Math.random() * 1000);
+            const likes = Object.keys(favorites).length > 0 && favorites[name] ? Object.keys(favorites).length : Math.floor(Math.random() * 500);
+
+            productImage.src = imageSrc;
+            productName.textContent = name;
+            productPrice.textContent = `${price} جنيه`;
+            productDiscount.textContent = `الخصم: ${discount}%`;
+            productSold.textContent = `عدد القطع المباعة: ${sold}`;
+            productLikes.textContent = `عدد الإعجابات: ${likes}`;
+            productReviews.textContent = reviews;
+
+            if (favorites[name]) {
+                likeBtn.classList.add('liked');
+                likeBtn.querySelector('i').classList.replace('far', 'fas');
+            } else {
+                likeBtn.classList.remove('liked');
+                likeBtn.querySelector('i').classList.replace('fas', 'far');
+            }
+
+            addToCartBtn.onclick = () => {
+                if (cart[name]) {
+                    cart[name].quantity += 1;
+                } else {
+                    cart[name] = { price: parseInt(price), quantity: 1 };
+                }
+                updateCartCount();
+                alert(`تمت إضافة "${name}" إلى السلة!`);
+            };
+
+            buyNowBtn.onclick = () => {
+                alert(`جارٍ الشراء الآن لـ "${name}" بقيمة ${price} جنيه!`);
+            };
+
+            likeBtn.onclick = () => {
+                if (favorites[name]) {
+                    delete favorites[name];
+                    likeBtn.classList.remove('liked');
+                    likeBtn.querySelector('i').classList.replace('fas', 'far');
+                } else {
+                    favorites[name] = true;
+                    likeBtn.classList.add('liked');
+                    likeBtn.querySelector('i').classList.replace('far', 'fas');
+                }
+                updateFavoritesCount();
+                productLikes.textContent = `عدد الإعجابات: ${Object.keys(favorites).length > 0 && favorites[name] ? Object.keys(favorites).length : likes}`;
+            };
+
+            productModal.classList.add('open');
+        }
+
+        itemsPerPageSelect.addEventListener('change', () => {
+            currentPage = 1;
+            updateProductsDisplay();
+            rebindProductEvents();
+        });
+
+        columnsPerRowSelect.addEventListener('change', () => {
+            currentPage = 1;
+            updateProductsDisplay();
+            rebindProductEvents();
+        });
+
+        // Initial binding of product events
+        rebindProductEvents();
     </script>
 </body>
 </html>
