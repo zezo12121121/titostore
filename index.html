@@ -70,14 +70,14 @@
             align-items: center;
         }
 
-        .search-icon, .cart-icon, .category-toggle, .login-icon {
+        .search-icon, .cart-icon, .category-toggle, .login-icon, .admin-icon {
             font-size: 20px;
             color: var(--primary-color);
             cursor: pointer;
             position: relative;
         }
 
-        .cart-icon::after {
+        .cart-icon::after, .favorites-icon::after {
             content: attr(data-count);
             position: absolute;
             top: -10px;
@@ -102,42 +102,22 @@
             position: relative;
         }
 
-        .favorites-icon::after {
-            content: attr(data-count);
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            background-color: var(--button-hover);
-            color: var(--secondary-color);
-            border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-        }
-
         /* Search Bar */
         .search-bar {
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 100%;
             background-color: var(--secondary-color);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             padding: 10px 20px;
-            transform: translateY(-100%);
-            transition: transform 0.3s ease;
-            z-index: 1001;
-            display: flex;
-            flex-direction: column;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+            display: none;
+            justify-content: center;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            position: relative;
         }
 
         .search-bar.open {
-            transform: translateY(0);
+            display: flex;
         }
 
         .search-bar input {
@@ -147,229 +127,66 @@
             border: 1px solid var(--border-color);
             border-radius: 5px;
             font-size: 16px;
-            margin-bottom: 10px;
         }
 
-        .search-bar button {
+        .search-bar .close-search {
             background: none;
             border: none;
             font-size: 20px;
             color: var(--primary-color);
             cursor: pointer;
-            position: absolute;
-            top: 10px;
-            left: 20px;
         }
 
+        /* Search Results */
         .search-results {
+            display: none;
+            position: absolute;
+            top: 60px;
             width: 100%;
             max-width: 500px;
             background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
             border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 998;
             max-height: 300px;
             overflow-y: auto;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            display: none;
         }
 
-        .search-results.active {
+        .search-results.open {
             display: block;
         }
 
         .search-results .result-item {
+            display: flex;
+            align-items: center;
             padding: 10px;
             border-bottom: 1px solid var(--border-color);
-            color: var(--text-color);
             cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .search-results .result-item:hover {
-            background-color: var(--gray-bg);
         }
 
         .search-results .result-item:last-child {
             border-bottom: none;
         }
 
-        /* Cart Modal */
-        .cart-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .cart-modal.open {
-            display: flex;
-        }
-
-        .cart-modal-content {
-            background-color: var(--card-bg);
-            width: 90%;
-            max-width: 400px;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            position: relative;
-            text-align: center;
-        }
-
-        .cart-modal h2 {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-        }
-
-        .cart-items {
-            list-style: none;
-            max-height: 50vh;
-            overflow-y: auto;
-            margin-bottom: 20px;
-        }
-
-        .cart-items li {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .cart-items li img {
+        .search-results .result-item img {
             width: 50px;
             height: 50px;
             object-fit: cover;
             border-radius: 5px;
+            margin-left: 10px;
         }
 
-        .cart-items li span {
+        .search-results .result-item span {
             flex-grow: 1;
-            text-align: right;
+            font-size: 14px;
+            color: var(--text-color);
         }
 
-        .cart-items li:last-child {
-            border-bottom: none;
-        }
-
-        .cart-total {
-            font-size: 18px;
+        .search-results .result-item .price {
+            font-size: 14px;
+            color: var(--primary-color);
             font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-        }
-
-        .buy-now-btn {
-            background-color: var(--button-bg);
-            color: var(--secondary-color);
-            border: none;
-            padding: 12px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-            transition: background-color 0.3s ease;
-            width: 100%;
-        }
-
-        .buy-now-btn:hover {
-            background-color: var(--button-hover);
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            font-size: 24px;
-            color: var(--primary-color);
-            cursor: pointer;
-        }
-
-        /* Favorites Modal */
-        .favorites-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .favorites-modal.open {
-            display: flex;
-        }
-
-        .favorites-modal-content {
-            background-color: var(--card-bg);
-            width: 90%;
-            max-width: 400px;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            position: relative;
-            text-align: center;
-        }
-
-        .favorites-modal h2 {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-        }
-
-        .favorites-items {
-            list-style: none;
-            max-height: 50vh;
-            overflow-y: auto;
-            margin-bottom: 20px;
-        }
-
-        .favorites-items li {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .favorites-items li img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 5px;
-        }
-
-        .favorites-items li span {
-            flex-grow: 1;
-            text-align: right;
-        }
-
-        .favorites-items li:last-child {
-            border-bottom: none;
-        }
-
-        .close-favorites {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            font-size: 24px;
-            color: var(--primary-color);
-            cursor: pointer;
         }
 
         /* Product Details Modal */
@@ -401,12 +218,49 @@
             text-align: center;
         }
 
-        .product-details-content img {
-            max-width: 100%;
+        .product-details-content .carousel {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
             height: 300px;
-            object-fit: cover;
-            border-radius: 10px;
             margin-bottom: 15px;
+        }
+
+        .product-details-content .carousel-images {
+            display: flex;
+            transition: transform 0.3s ease;
+            height: 100%;
+        }
+
+        .product-details-content .carousel-images img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            flex-shrink: 0;
+            border-radius: 10px;
+        }
+
+        .carousel-controls {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+
+        .carousel-controls button {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: var(--secondary-color);
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+
+        .carousel-controls button:hover {
+            background-color: rgba(0, 0, 0, 0.8);
         }
 
         .product-details-content h2 {
@@ -476,573 +330,132 @@
             cursor: pointer;
         }
 
-        /* User Modal */
-        .user-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .user-modal.open {
-            display: flex;
-        }
-
-        .user-modal-content {
-            background-color: var(--card-bg);
-            width: 90%;
-            max-width: 400px;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            position: relative;
-            text-align: center;
-        }
-
-        .user-modal h2 {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .user-icon {
-            font-size: 40px;
-            color: var(--primary-color);
-        }
-
-        .user-details {
-            text-align: right;
-        }
-
-        .user-details h2 {
-            font-size: 20px;
-            margin: 0;
-        }
-
-        .user-details p {
-            font-size: 14px;
-            color: var(--text-color);
-            margin: 5px 0 0;
-        }
-
-        #logout-btn {
-            background-color: var(--button-bg);
-            color: var(--secondary-color);
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-            transition: background-color 0.3s ease;
-            width: 100%;
-        }
-
-        #logout-btn:hover {
-            background-color: var(--button-hover);
-        }
-
-        .login-form-container, .signup-form-container {
-            display: block;
-        }
-
-        .login-form-container form, .signup-form-container form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .login-form-container input, .signup-form-container input {
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        .login-form-container button[type="submit"], .signup-form-container button[type="submit"] {
-            background-color: var(--button-bg);
-            color: var(--secondary-color);
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-            transition: background-color 0.3s ease;
-        }
-
-        .login-form-container button[type="submit"]:hover, .signup-form-container button[type="submit"]:hover {
-            background-color: var(--button-hover);
-        }
-
-        .login-form-container p, .signup-form-container p {
-            margin-top: 10px;
-            font-size: 14px;
-        }
-
-        .login-form-container a, .signup-form-container a {
-            color: var(--button-hover);
-            text-decoration: none;
-        }
-
-        .close-user {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            font-size: 24px;
-            color: var(--primary-color);
-            cursor: pointer;
-        }
-
-        /* Banner */
-        .banner {
-            width: 100%;
-            height: 500px;
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://i.imgur.com/IeH7hX1.jpeg'), url('product1.jpg') no-repeat center center/cover;
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--secondary-color);
-            text-align: center;
-            position: relative;
-        }
-
-        .banner-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-
-        .banner h2 {
-            font-size: 72px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        .banner p {
-            font-size: 18px;
-            margin-top: 10px;
-        }
-
-        /* Categories Sidebar */
-        .categories {
-            position: fixed;
-            top: 60px;
-            left: 0;
-            width: 250px;
-            height: calc(100vh - 60px);
-            background-color: var(--secondary-color);
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
-            z-index: 900;
-        }
-
-        .categories.open {
-            transform: translateX(0);
-        }
-
-        .categories h3 {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: var(--primary-color);
-        }
-
-        .categories ul {
-            list-style: none;
-        }
-
-        .categories li {
-            margin: 10px 0;
-        }
-
-        .categories a {
-            color: var(--text-color);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 400;
-        }
-
-        .categories a:hover {
-            color: var(--button-hover);
-        }
-
-        /* Products Grid */
-        .products {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-
-        .product-card {
-            background-color: var(--card-bg);
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            text-align: center;
-            position: relative;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-        }
-
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .product-card img {
-            max-width: 100%;
-            height: 250px;
-            object-fit: cover;
-            border-radius: 10px 10px 0 0;
-            loading: lazy;
-        }
-
-        .product-card .product-info {
-            padding: 15px;
-        }
-
-        .product-card h3 {
-            font-size: 18px;
-            font-weight: 500;
-            color: var(--primary-color);
-            margin-bottom: 10px;
-        }
-
-        .product-card .price {
-            font-size: 16px;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-        }
-
-        .product-card .reviews {
-            font-size: 14px;
-            color: #888;
-            margin-bottom: 15px;
-        }
-
-        .product-card .buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            padding: 10px;
-            background-color: var(--gray-bg);
-        }
-
-        .product-card button {
-            background-color: var(--button-bg);
-            color: var(--secondary-color);
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: background-color 0.3s ease;
-            width: 100px;
-        }
-
-        .product-card button:hover {
-            background-color: var(--button-hover);
-        }
-
-        /* Like Button */
-        .like-btn {
-            background: none;
-            border: none;
-            font-size: 20px;
-            color: var(--text-color);
-            cursor: pointer;
-            transition: color 0.3s ease;
-            padding: 8px;
-            width: auto;
-        }
-
-        .like-btn.liked {
-            color: #ff4444;
-        }
-
-        .like-btn i {
-            font-size: 20px;
-        }
-
-        /* Recommendations */
-        .recommendations {
-            padding: 20px;
-            background-color: var(--gray-bg);
-            margin: 20px 0;
-            text-align: center;
-        }
-
-        .recommendations h3 {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-        }
-
-        .recommendations .products {
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        }
-
-        /* Newsletter */
-        .newsletter {
-            background-color: var(--primary-color);
-            color: var(--secondary-color);
-            padding: 40px 20px;
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .newsletter h3 {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .newsletter p {
-            font-size: 16px;
-            margin-bottom: 20px;
-        }
-
-        .newsletter form {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .newsletter input[type="email"] {
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            width: 60%;
-            font-size: 14px;
-        }
-
-        .newsletter button {
-            background-color: var(--secondary-color);
-            color: var(--primary-color);
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: background-color 0.3s ease;
-        }
-
-        .newsletter button:hover {
-            background-color: var(--button-hover);
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--secondary-color);
-            padding: 40px 20px;
-            text-align: center;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            max-width: 1200px;
-            margin: 0 auto 20px;
-            gap: 20px;
-        }
-
-        .footer-section {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .footer-section h4 {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-        }
-
-        .footer-section a {
-            color: var(--text-color);
-            text-decoration: none;
-            display: block;
-            margin: 10px 0;
-            font-size: 14px;
-        }
-
-        .footer-section a:hover {
-            color: var(--button-hover);
-        }
-
-        .footer-section.social-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-        .social-media {
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .social-media a {
-            color: var(--primary-color);
-            font-size: 16px;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-direction: row-reverse;
-        }
-
-        .social-media a:hover {
-            color: var(--button-hover);
-        }
-
-        .social-media i {
-            font-size: 20px;
-        }
-
-        .footer-bottom {
-            font-size: 12px;
-            color: var(--text-color);
-            margin-top: 20px;
-        }
-
-        /* Mode Toggle Button */
-        .mode-toggle {
-            background: none;
-            border: none;
-            font-size: 20px;
-            color: var(--primary-color);
-            cursor: pointer;
-            margin-left: 10px;
-        }
-
-        /* Products Display Options */
-        .products-display-options {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            padding: 10px 20px;
-            background-color: var(--gray-bg);
-        }
-
-        .products-display-options label {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--primary-color);
-        }
-
-        .products-display-options select {
-            padding: 5px;
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            font-size: 14px;
-            background-color: var(--card-bg);
-            color: var(--text-color);
-        }
-
-        /* Pagination */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            padding: 10px 20px;
-        }
-
-        .pagination button {
-            background-color: var(--button-bg);
-            color: var(--secondary-color);
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.3s ease;
-        }
-
-        .pagination button:hover {
-            background-color: var(--button-hover);
-        }
-
-        .pagination button.active {
-            background-color: var(--button-hover);
-        }
-
-        /* Responsive */
+        /* بقية الستايل بدون تغيير */
+        .cart-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1000; justify-content: center; align-items: center; }
+        .cart-modal.open { display: flex; }
+        .cart-modal-content { background-color: var(--card-bg); width: 90%; max-width: 400px; padding: 20px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); position: relative; text-align: center; }
+        .cart-modal h2 { font-size: 24px; font-weight: 700; color: var(--primary-color); margin-bottom: 15px; }
+        .cart-items { list-style: none; max-height: 50vh; overflow-y: auto; margin-bottom: 20px; }
+        .cart-items li { display: flex; align-items: center; gap: 10px; padding: 10px; border-bottom: 1px solid var(--border-color); }
+        .cart-items li img { width: 50px; height: 50px; object-fit: cover; border-radius: 5px; }
+        .cart-items li span { flex-grow: 1; text-align: right; }
+        .cart-items li:last-child { border-bottom: none; }
+        .cart-total { font-size: 18px; font-weight: 700; color: var(--primary-color); margin-bottom: 20px; }
+        .buy-now-btn { background-color: var(--button-bg); color: var(--secondary-color); border: none; padding: 12px 20px; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: 500; transition: background-color 0.3s ease; width: 100%; }
+        .buy-now-btn:hover { background-color: var(--button-hover); }
+        .close-modal { position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 24px; color: var(--primary-color); cursor: pointer; }
+        .cart-controls { display: flex; gap: 5px; align-items: center; }
+        .cart-controls button { background-color: var(--button-bg); color: var(--secondary-color); border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 14px; transition: background-color 0.3s ease; }
+        .cart-controls button:hover { background-color: var(--button-hover); }
+        .cart-controls .remove-btn { background-color: #ff4444; }
+        .cart-controls .remove-btn:hover { background-color: #cc3333; }
+        .favorites-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1000; justify-content: center; align-items: center; }
+        .favorites-modal.open { display: flex; }
+        .favorites-modal-content { background-color: var(--card-bg); width: 90%; max-width: 400px; padding: 20px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); position: relative; text-align: center; }
+        .favorites-modal h2 { font-size: 24px; font-weight: 700; color: var(--primary-color); margin-bottom: 15px; }
+        .favorites-items { list-style: none; max-height: 50vh; overflow-y: auto; margin-bottom: 20px; }
+        .favorites-items li { display: flex; align-items: center; gap: 10px; padding: 10px; border-bottom: 1px solid var(--border-color); }
+        .favorites-items li img { width: 50px; height: 50px; object-fit: cover; border-radius: 5px; }
+        .favorites-items li span { flex-grow: 1; text-align: right; }
+        .favorites-items li:last-child { border-bottom: none; }
+        .close-favorites { position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 24px; color: var(--primary-color); cursor: pointer; }
+        .user-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1000; justify-content: center; align-items: center; }
+        .user-modal.open { display: flex; }
+        .user-modal-content { background-color: var(--card-bg); width: 90%; max-width: 400px; padding: 20px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); position: relative; text-align: center; }
+        .user-modal h2 { font-size: 24px; font-weight: 700; color: var(--primary-color); margin-bottom: 15px; }
+        .user-info { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+        .user-icon { font-size: 40px; color: var(--primary-color); }
+        .user-details { text-align: right; }
+        .user-details h2 { font-size: 20px; margin: 0; }
+        .user-details p { font-size: 14px; color: var(--text-color); margin: 5px 0 0; }
+        #logout-btn { background-color: var(--button-bg); color: var(--secondary-color); border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: 500; transition: background-color 0.3s ease; width: 100%; }
+        #logout-btn:hover { background-color: var(--button-hover); }
+        .login-form-container, .signup-form-container { display: block; }
+        .login-form-container form, .signup-form-container form { display: flex; flex-direction: column; gap: 10px; }
+        .login-form-container input, .signup-form-container input { padding: 10px; border: 1px solid var(--border-color); border-radius: 5px; font-size: 16px; }
+        .login-form-container button[type="submit"], .signup-form-container button[type="submit"] { background-color: var(--button-bg); color: var(--secondary-color); border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: 500; transition: background-color 0.3s ease; }
+        .login-form-container button[type="submit"]:hover, .signup-form-container button[type="submit"]:hover { background-color: var(--button-hover); }
+        .login-form-container p, .signup-form-container p { margin-top: 10px; font-size: 14px; }
+        .login-form-container a, .signup-form-container a { color: var(--button-hover); text-decoration: none; }
+        .close-user { position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 24px; color: var(--primary-color); cursor: pointer; }
+        .admin-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1000; justify-content: center; align-items: center; }
+        .admin-modal.open { display: flex; }
+        .admin-modal-content { background-color: var(--card-bg); width: 90%; max-width: 500px; padding: 20px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); position: relative; text-align: center; }
+        .admin-modal h2 { font-size: 24px; font-weight: 700; color: var(--primary-color); margin-bottom: 15px; }
+        .admin-modal h3 { font-size: 18px; font-weight: 600; color: var(--primary-color); margin-bottom: 10px; }
+        .admin-modal form { display: flex; flex-direction: column; gap: 10px; }
+        .admin-modal input, .admin-modal select { padding: 10px; border: 1px solid var(--border-color); border-radius: 5px; font-size: 16px; }
+        .admin-modal button[type="submit"] { background-color: var(--button-bg); color: var(--secondary-color); border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: 500; transition: background-color 0.3s ease; }
+        .admin-modal button[type="submit"]:hover { background-color: var(--button-hover); }
+        .close-admin { position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 24px; color: var(--primary-color); cursor: pointer; }
+        #admin-password-section { display: block; }
+        #edit-product-form-container { display: none; }
+        .banner { width: 100%; height: 500px; background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://i.imgur.com/IeH7hX1.jpeg') no-repeat center center/cover; display: flex; align-items: center; justify-content: center; color: var(--secondary-color); text-align: center; position: relative; }
+        .banner-content { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .banner h2 { font-size: 72px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); }
+        .banner p { font-size: 18px; margin-top: 10px; }
+        .categories { position: fixed; top: 60px; left: 0; width: 250px; height: calc(100vh - 60px); background-color: var(--secondary-color); box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); padding: 20px; transform: translateX(-100%); transition: transform 0.3s ease; z-index: 900; }
+        .categories.open { transform: translateX(0); }
+        .categories h3 { font-size: 18px; font-weight: 700; margin-bottom: 15px; color: var(--primary-color); }
+        .categories ul { list-style: none; }
+        .categories li { margin: 10px 0; }
+        .categories a { color: var(--text-color); text-decoration: none; font-size: 14px; font-weight: 400; cursor: pointer; }
+        .categories a:hover { color: var(--button-hover); }
+        .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 20px; margin: 20px 0; }
+        .product-card { background-color: var(--card-bg); border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); overflow: hidden; text-align: center; position: relative; transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); }
+        .product-card img { max-width: 100%; height: 250px; object-fit: cover; border-radius: 10px 10px 0 0; loading: lazy; }
+        .product-card .product-info { padding: 15px; }
+        .product-card h3 { font-size: 18px; font-weight: 500; color: var(--primary-color); margin-bottom: 10px; }
+        .product-card .price { font-size: 16px; color: var(--primary-color); margin-bottom: 15px; }
+        .product-card .reviews { font-size: 14px; color: #888; margin-bottom: 15px; }
+        .product-card .buttons { display: flex; justify-content: center; gap: 10px; padding: 10px; background-color: var(--gray-bg); }
+        .product-card button { background-color: var(--button-bg); color: var(--secondary-color); border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 14px; font-weight: 500; transition: background-color 0.3s ease; width: 100px; }
+        .product-card button:hover { background-color: var(--button-hover); }
+        .like-btn { background: none; border: none; font-size: 20px; color: var(--text-color); cursor: pointer; transition: color 0.3s ease; padding: 8px; width: auto; }
+        .like-btn.liked { color: #ff4444; }
+        .like-btn i { font-size: 20px; }
+        .recommendations { padding: 20px; background-color: var(--gray-bg); margin: 20px 0; text-align: center; }
+        .recommendations h3 { font-size: 24px; font-weight: 700; color: var(--primary-color); margin-bottom: 20px; }
+        .newsletter { background-color: var(--primary-color); color: var(--secondary-color); padding: 40px 20px; text-align: center; margin: 20px 0; }
+        .newsletter h3 { font-size: 24px; font-weight: 700; margin-bottom: 20px; }
+        .newsletter form { display: flex; justify-content: center; gap: 10px; max-width: 500px; margin: 0 auto; }
+        .newsletter input[type="email"] { padding: 10px; border: 1px solid var(--border-color); border-radius: 5px; width: 60%; font-size: 14px; }
+        .newsletter button { background-color: var(--secondary-color); color: var(--primary-color); border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: 500; transition: background-color 0.3s ease; }
+        .newsletter button:hover { background-color: var(--button-hover); }
+        footer { background-color: var(--secondary-color); padding: 40px 20px; text-align: center; border-top: 1px solid var(--border-color); }
+        .footer-content { display: flex; justify-content: space-between; flex-wrap: wrap; max-width: 1200px; margin: 0 auto 20px; gap: 20px; }
+        .footer-section { flex: 1; min-width: 200px; }
+        .footer-section h4 { font-size: 18px; font-weight: 700; color: var(--primary-color); margin-bottom: 15px; }
+        .footer-section a { color: var(--text-color); text-decoration: none; display: block; margin: 10px 0; font-size: 14px; }
+        .footer-section a:hover { color: var(--button-hover); }
+        .footer-section.social-section { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .social-media { margin-top: 20px; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        .social-media a { color: var(--primary-color); font-size: 16px; text-decoration: none; display: flex; align-items: center; gap: 8px; flex-direction: row-reverse; }
+        .social-media a:hover { color: var(--button-hover); }
+        .social-media i { font-size: 20px; }
+        .footer-bottom { font-size: 12px; color: var(--text-color); margin-top: 20px; }
+        .mode-toggle { background: none; border: none; font-size: 20px; color: var(--primary-color); cursor: pointer; margin-left: 10px; }
+        .products-display-options { display: flex; justify-content: center; gap: 20px; padding: 10px 20px; background-color: var(--gray-bg); }
+        .products-display-options label { font-size: 14px; font-weight: 500; color: var(--primary-color); }
+        .products-display-options select { padding: 5px; border: 1px solid var(--border-color); border-radius: 5px; font-size: 14px; background-color: var(--card-bg); color: var(--text-color); }
+        .pagination { display: flex; justify-content: center; gap: 10px; padding: 10px 20px; }
+        .pagination button { background-color: var(--button-bg); color: var(--secondary-color); border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 14px; transition: background-color 0.3s ease; }
+        .pagination button:hover { background-color: var(--button-hover); }
+        .pagination button.active { background-color: var(--button-hover); }
         @media (max-width: 768px) {
-            .banner {
-                height: 300px;
+            .banner { height: 300px; }
+            .banner h2 { font-size: 48px; }
+            header { padding: 10px 15px; }
+            .categories { width: 200px; }
+            /* تعديل عدد الأعمدة ليكون 1 على الشاشات الصغيرة */
+            .products { 
+                grid-template-columns: repeat(1, minmax(180px, 1fr)); 
             }
-
-            .banner h2 {
-                font-size: 48px;
-            }
-
-            header {
-                padding: 10px 15px;
-            }
-
-            .categories {
-                width: 200px;
-            }
-
-            .products, .recommendations .products {
-                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            }
-
-            .footer-content {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .search-bar input, .search-results {
-                max-width: 100%;
-            }
-
-            .product-details-content img {
-                height: 200px;
-            }
-
-            .products-display-options {
-                flex-direction: column;
-                gap: 10px;
-            }
+            .footer-content { flex-direction: column; align-items: center; }
+            .search-bar input { max-width: 100%; }
+            .product-details-content .carousel { height: 200px; }
+            .products-display-options { flex-direction: column; gap: 10px; }
         }
     </style>
 </head>
@@ -1055,14 +468,15 @@
             <i class="fas fa-heart favorites-icon" data-count="0"></i>
             <i class="fas fa-search search-icon"></i>
             <i class="fas fa-user login-icon" id="login-icon"></i>
+            <i class="fas fa-tools admin-icon" title="إدارة المنتجات"></i>
             <a href="#home">الرئيسية</a>
             <button class="mode-toggle">🌙</button>
         </div>
     </header>
 
     <div class="search-bar" id="search-bar">
-        <input type="text" placeholder="ابحث عن منتج..." id="search-input">
-        <button id="close-search"><i class="fas fa-times"></i></button>
+        <input type="text" id="search-input" placeholder="ابحث عن منتج...">
+        <button class="close-search" id="close-search"><i class="fas fa-times"></i></button>
         <div class="search-results" id="search-results"></div>
     </div>
 
@@ -1089,7 +503,13 @@
     <!-- Product Details Modal -->
     <div class="product-details-modal" id="product-details-modal">
         <div class="product-details-content">
-            <img id="product-details-image" src="" alt="صورة المنتج">
+            <div class="carousel">
+                <div class="carousel-images" id="carousel-images"></div>
+                <div class="carousel-controls">
+                    <button id="prev-image"><i class="fas fa-chevron-right"></i></button>
+                    <button id="next-image"><i class="fas fa-chevron-left"></i></button>
+                </div>
+            </div>
             <h2 id="product-details-name"></h2>
             <p class="price" id="product-details-price"></p>
             <p id="product-details-discount"></p>
@@ -1141,11 +561,49 @@
         </div>
     </div>
 
+    <!-- Admin Modal -->
+    <div class="admin-modal" id="admin-modal">
+        <div class="admin-modal-content">
+            <h2>إدارة المنتجات</h2>
+            <div id="admin-password-section">
+                <input type="password" id="admin-password" placeholder="أدخل الرقم السري للتعديل">
+                <button id="verify-password">تحقق</button>
+            </div>
+            <div id="add-product-form-container">
+                <h3>إضافة منتج جديد</h3>
+                <form id="add-product-form">
+                    <input type="text" id="add-product-name" placeholder="اسم المنتج" required>
+                    <input type="number" id="add-product-price" placeholder="السعر (جنيه)" required>
+                    <input type="text" id="add-product-type" placeholder="النوع (shoe/bag)" required>
+                    <input type="url" id="add-product-image" placeholder="رابط الصورة" required>
+                    <input type="text" id="add-product-reviews" placeholder="التقييم (مثال: 4.5 (120 تقييم))" required>
+                    <button type="submit">إضافة المنتج</button>
+                </form>
+            </div>
+            <div id="edit-product-form-container">
+                <h3>تعديل منتج</h3>
+                <form id="edit-product-form">
+                    <select id="edit-product-select" required>
+                        <option value="">اختر منتجًا للتعديل</option>
+                    </select>
+                    <input type="text" id="edit-product-name" placeholder="اسم المنتج" required>
+                    <input type="number" id="edit-product-price" placeholder="السعر (جنيه)" required>
+                    <input type="text" id="edit-product-type" placeholder="النوع (shoe/bag)" required>
+                    <input type="url" id="edit-product-image" placeholder="رابط الصورة" required>
+                    <input type="text" id="edit-product-reviews" placeholder="التقييم (مثال: 4.5 (120 تقييم))" required>
+                    <button type="submit">حفظ التعديلات</button>
+                </form>
+            </div>
+            <button class="close-admin" id="close-admin">×</button>
+        </div>
+    </div>
+
     <div class="categories">
         <h3>الفئات</h3>
         <ul>
-            <li><a href="#shoes">الأحذية</a></li>
-            <li><a href="#bags">الشنط</a></li>
+            <li><a id="home-filter">الرئيسية</a></li>
+            <li><a id="shoes-filter">الأحذية</a></li>
+            <li><a id="bags-filter">الشنط</a></li>
         </ul>
     </div>
 
@@ -1178,7 +636,7 @@
             </div>
         </div>
         <div class="products" id="products-container">
-            <div class="product-card" data-name="شنطة De Vente" data-price="1250">
+            <div class="product-card" data-name="شنطة De Vente" data-price="1250" data-type="bag">
                 <img src="https://i.imgur.com/IeH7hX1.jpeg" alt="شنطة De Vente">
                 <div class="product-info">
                     <h3>شنطة De Vente</h3>
@@ -1191,7 +649,7 @@
                     <button class="like-btn" data-name="شنطة De Vente"><i class="far fa-heart"></i></button>
                 </div>
             </div>
-            <div class="product-card" data-name="حذاء رياضي" data-price="300">
+            <div class="product-card" data-name="حذاء رياضي" data-price="300" data-type="shoe">
                 <img src="product1.jpg" alt="حذاء رياضي">
                 <div class="product-info">
                     <h3>حذاء رياضي</h3>
@@ -1204,58 +662,6 @@
                     <button class="like-btn" data-name="حذاء رياضي"><i class="far fa-heart"></i></button>
                 </div>
             </div>
-            <div class="product-card" data-name="منتج 1" data-price="100">
-                <img src="product1.jpg" alt="منتج 1">
-                <div class="product-info">
-                    <h3>منتج 1</h3>
-                    <p class="price">100 جنيه</p>
-                    <p class="reviews">4.2 (80 تقييم)</p>
-                </div>
-                <div class="buttons">
-                    <button class="add-to-chart">إضافة إلى السلة</button>
-                    <button class="buy-now">اشترِ الآن</button>
-                    <button class="like-btn" data-name="منتج 1"><i class="far fa-heart"></i></button>
-                </div>
-            </div>
-            <div class="product-card" data-name="منتج 2" data-price="150">
-                <img src="product2.jpg" alt="منتج 2">
-                <div class="product-info">
-                    <h3>منتج 2</h3>
-                    <p class="price">150 جنيه</p>
-                    <p class="reviews">4.7 (110 تقييم)</p>
-                </div>
-                <div class="buttons">
-                    <button class="add-to-chart">إضافة إلى السلة</button>
-                    <button class="buy-now">اشترِ الآن</button>
-                    <button class="like-btn" data-name="منتج 2"><i class="far fa-heart"></i></button>
-                </div>
-            </div>
-            <div class="product-card" data-name="منتج 3" data-price="200">
-                <img src="product3.jpg" alt="منتج 3">
-                <div class="product-info">
-                    <h3>منتج 3</h3>
-                    <p class="price">200 جنيه</p>
-                    <p class="reviews">4.6 (90 تقييم)</p>
-                </div>
-                <div class="buttons">
-                    <button class="add-to-chart">إضافة إلى السلة</button>
-                    <button class="buy-now">اشترِ الآن</button>
-                    <button class="like-btn" data-name="منتج 3"><i class="far fa-heart"></i></button>
-                </div>
-            </div>
-            <div class="product-card" data-name="منتج 4" data-price="250">
-                <img src="product4.jpg" alt="منتج 4">
-                <div class="product-info">
-                    <h3>منتج 4</h3>
-                    <p class="price">250 جنيه</p>
-                    <p class="reviews">4.9 (130 تقييم)</p>
-                </div>
-                <div class="buttons">
-                    <button class="add-to-chart">إضافة إلى السلة</button>
-                    <button class="buy-now">اشترِ الآن</button>
-                    <button class="like-btn" data-name="منتج 4"><i class="far fa-heart"></i></button>
-                </div>
-            </div>
         </div>
         <div class="pagination" id="pagination"></div>
     </div>
@@ -1263,7 +669,7 @@
     <div class="recommendations">
         <h3>استكشف توصياتنا</h3>
         <div class="products">
-            <div class="product-card" data-name="حذاء رياضي" data-price="300">
+            <div class="product-card" data-name="حذاء رياضي" data-price="300" data-type="shoe">
                 <img src="product1.jpg" alt="توصية 1">
                 <div class="product-info">
                     <h3>حذاء رياضي</h3>
@@ -1274,19 +680,6 @@
                     <button class="add-to-chart">إضافة إلى السلة</button>
                     <button class="buy-now">اشترِ الآن</button>
                     <button class="like-btn" data-name="حذاء رياضي"><i class="far fa-heart"></i></button>
-                </div>
-            </div>
-            <div class="product-card" data-name="منتج 2" data-price="150">
-                <img src="product2.jpg" alt="توصية 2">
-                <div class="product-info">
-                    <h3>منتج 2</h3>
-                    <p class="price">150 جنيه</p>
-                    <p class="reviews">4.7 (110 تقييم)</p>
-                </div>
-                <div class="buttons">
-                    <button class="add-to-chart">إضافة إلى السلة</button>
-                    <button class="buy-now">اشترِ الآن</button>
-                    <button class="like-btn" data-name="منتج 2"><i class="far fa-heart"></i></button>
                 </div>
             </div>
         </div>
@@ -1342,52 +735,52 @@
 
         closeSearch.addEventListener('click', () => {
             searchBar.classList.remove('open');
+            searchResults.classList.remove('open');
             searchInput.value = '';
-            searchResults.classList.remove('active');
-            searchResults.innerHTML = '';
+            updateProductsDisplay();
         });
 
         searchInput.addEventListener('input', () => {
             const query = searchInput.value.trim().toLowerCase();
-            searchResults.innerHTML = '';
-            if (query === '') {
-                searchResults.classList.remove('active');
+            if (query.length < 2) {
+                searchResults.classList.remove('open');
                 updateProductsDisplay();
                 return;
             }
 
-            const products = document.querySelectorAll('.product-card');
-            let hasResults = false;
-            searchResults.innerHTML = '';
-            products.forEach(product => {
-                const productName = product.dataset.name.toLowerCase();
-                if (productName.includes(query)) {
-                    const resultItem = document.createElement('div');
-                    resultItem.classList.add('result-item');
-                    resultItem.textContent = product.dataset.name;
-                    resultItem.addEventListener('click', () => {
-                        product.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        searchBar.classList.remove('open');
-                        searchInput.value = '';
-                        searchResults.classList.remove('active');
-                        updateProductsDisplay();
-                    });
-                    searchResults.appendChild(resultItem);
-                    hasResults = true;
-                }
-            });
+            const allProducts = Array.from(document.querySelectorAll('.product-card'));
+            const filteredProducts = allProducts.filter(product => 
+                product.dataset.name.toLowerCase().startsWith(query) || 
+                product.dataset.name.toLowerCase().includes(query)
+            );
 
-            searchResults.classList.toggle('active', hasResults);
-            if (!hasResults) {
-                const noResult = document.createElement('div');
-                noResult.classList.add('result-item');
-                noResult.textContent = 'لم يتم العثور على منتجات';
-                searchResults.appendChild(noResult);
-                searchResults.classList.add('active');
+            searchResults.innerHTML = '';
+            if (filteredProducts.length > 0) {
+                filteredProducts.forEach(product => {
+                    const item = document.createElement('div');
+                    item.classList.add('result-item');
+                    item.innerHTML = `
+                        <img src="${product.querySelector('img').src}" alt="${product.dataset.name}">
+                        <span>${product.dataset.name}</span>
+                        <span class="price">${product.dataset.price} جنيه</span>
+                    `;
+                    item.addEventListener('click', () => {
+                        handleProductClick.call(product);
+                        searchBar.classList.remove('open');
+                        searchResults.classList.remove('open');
+                        searchInput.value = '';
+                    });
+                    searchResults.appendChild(item);
+                });
+                searchResults.classList.add('open');
+            } else {
+                searchResults.innerHTML = '<div class="result-item">لا توجد نتائج</div>';
+                searchResults.classList.add('open');
             }
 
-            document.querySelector('#products-container').innerHTML = '';
-            document.querySelector('#pagination').innerHTML = '';
+            currentPage = 1;
+            currentFilter = null;
+            updateProductsDisplay(query);
         });
 
         // Cart Functionality
@@ -1403,33 +796,7 @@
 
         closeModal.addEventListener('click', () => cartModal.classList.remove('open'));
 
-        document.querySelectorAll('.add-to-chart').forEach(button => {
-            button.addEventListener('click', function() {
-                const productCard = this.closest('.product-card');
-                const productName = productCard.dataset.name;
-                const productPrice = parseInt(productCard.dataset.price);
-
-                if (cart[productName]) {
-                    cart[productName].quantity += 1;
-                } else {
-                    cart[productName] = { price: productPrice, quantity: 1 };
-                }
-                updateCartCount();
-                alert(`تمت إضافة "${productName}" إلى السلة بقيمة ${productPrice} جنيه!`);
-            });
-        });
-
-        document.querySelectorAll('.buy-now').forEach(button => {
-            button.addEventListener('click', function() {
-                const productCard = this.closest('.product-card');
-                const productName = productCard.dataset.name;
-                const productPrice = parseInt(productCard.dataset.price);
-                alert(`جارٍ الشراء الآن لـ "${productName}" بقيمة ${productPrice} جنيه!`);
-            });
-        });
-
         function updateCartCount() {
-            const cartIcon = document.querySelector('.cart-icon');
             const totalItems = Object.values(cart).reduce((sum, item) => sum + item.quantity, 0);
             cartIcon.setAttribute('data-count', totalItems > 0 ? totalItems : '');
             saveUserData();
@@ -1445,12 +812,55 @@
                 const productCard = Array.from(document.querySelectorAll('.product-card')).find(card => card.dataset.name === name);
                 const imageSrc = productCard ? productCard.querySelector('img').src : 'default-image.jpg';
                 const li = document.createElement('li');
-                li.innerHTML = `<img src="${imageSrc}" alt="${name}"><span>${name} - ${price} جنيه (القطع: ${quantity})</span>`;
+                li.innerHTML = `
+                    <img src="${imageSrc}" alt="${name}">
+                    <span>${name} - ${price} جنيه (القطع: ${quantity})</span>
+                    <div class="cart-controls">
+                        <button class="decrease-btn" data-name="${name}">-</button>
+                        <button class="increase-btn" data-name="${name}">+</button>
+                        <button class="remove-btn" data-name="${name}">إزالة</button>
+                    </div>
+                `;
                 cartItems.appendChild(li);
                 totalPrice += price * quantity;
             }
 
             totalPriceElement.textContent = totalPrice;
+
+            document.querySelectorAll('.decrease-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const name = this.dataset.name;
+                    if (cart[name].quantity > 1) {
+                        cart[name].quantity -= 1;
+                    } else {
+                        if (confirm(`الكمية 1، هل تريد إزالة "${name}" من السلة؟`)) {
+                            delete cart[name];
+                        }
+                    }
+                    updateCartCount();
+                    updateCartModal();
+                });
+            });
+
+            document.querySelectorAll('.increase-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const name = this.dataset.name;
+                    cart[name].quantity += 1;
+                    updateCartCount();
+                    updateCartModal();
+                });
+            });
+
+            document.querySelectorAll('.remove-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const name = this.dataset.name;
+                    if (confirm(`هل أنت متأكد من إزالة "${name}" من السلة؟`)) {
+                        delete cart[name];
+                        updateCartCount();
+                        updateCartModal();
+                    }
+                });
+            });
         }
 
         document.querySelector('.buy-now-btn').addEventListener('click', () => {
@@ -1480,24 +890,7 @@
 
         closeFavorites.addEventListener('click', () => favoritesModal.classList.remove('open'));
 
-        document.querySelectorAll('.like-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const productName = this.dataset.name;
-                if (favorites[productName]) {
-                    delete favorites[productName];
-                    this.classList.remove('liked');
-                    this.querySelector('i').classList.replace('fas', 'far');
-                } else {
-                    favorites[productName] = true;
-                    this.classList.add('liked');
-                    this.querySelector('i').classList.replace('far', 'fas');
-                }
-                updateFavoritesCount();
-            });
-        });
-
         function updateFavoritesCount() {
-            const favoritesIcon = document.querySelector('.favorites-icon');
             const totalFavorites = Object.keys(favorites).length;
             favoritesIcon.setAttribute('data-count', totalFavorites > 0 ? totalFavorites : '');
             saveUserData();
@@ -1523,78 +916,111 @@
         }
 
         // Product Details Functionality
+        const productImages = {
+            "شنطة De Vente": ["https://i.imgur.com/IeH7hX1.jpeg", "product2.jpg", "product3.jpg"],
+            "حذاء رياضي": ["product1.jpg", "product4.jpg", "product2.jpg"]
+        };
+
         document.querySelectorAll('.product-card').forEach(card => {
-            card.addEventListener('click', function(e) {
-                if (e.target.closest('.buttons')) return;
+            card.addEventListener('click', handleProductClick);
+        });
 
-                const productModal = document.querySelector('#product-details-modal');
-                const productImage = document.querySelector('#product-details-image');
-                const productName = document.querySelector('#product-details-name');
-                const productPrice = document.querySelector('#product-details-price');
-                const productDiscount = document.querySelector('#product-details-discount');
-                const productSold = document.querySelector('#product-details-sold');
-                const productLikes = document.querySelector('#product-details-likes');
-                const productReviews = document.querySelector('#product-details-reviews');
-                const addToCartBtn = document.querySelector('#product-details-add-to-cart');
-                const buyNowBtn = document.querySelector('#product-details-buy-now');
-                const likeBtn = document.querySelector('#product-details-like');
+        function handleProductClick(e) {
+            if (e.target.closest('.buttons')) return;
 
-                const name = this.dataset.name;
-                const price = this.dataset.price;
-                const imageSrc = this.querySelector('img').src;
-                const reviews = this.querySelector('.reviews').textContent;
+            const productModal = document.querySelector('#product-details-modal');
+            const carouselImages = document.querySelector('#carousel-images');
+            const productName = document.querySelector('#product-details-name');
+            const productPrice = document.querySelector('#product-details-price');
+            const productDiscount = document.querySelector('#product-details-discount');
+            const productSold = document.querySelector('#product-details-sold');
+            const productLikes = document.querySelector('#product-details-likes');
+            const productReviews = document.querySelector('#product-details-reviews');
+            const addToCartBtn = document.querySelector('#product-details-add-to-cart');
+            const buyNowBtn = document.querySelector('#product-details-buy-now');
+            const likeBtn = document.querySelector('#product-details-like');
+            const prevImageBtn = document.querySelector('#prev-image');
+            const nextImageBtn = document.querySelector('#next-image');
 
-                const discount = Math.floor(Math.random() * 20) + 1;
-                const sold = Math.floor(Math.random() * 1000);
-                const likes = Object.keys(favorites).length > 0 && favorites[name] ? Object.keys(favorites).length : Math.floor(Math.random() * 500);
+            const name = this.dataset.name;
+            const price = this.dataset.price;
+            const reviews = this.querySelector('.reviews').textContent;
+            const images = productImages[name] || [this.querySelector('img').src];
 
-                productImage.src = imageSrc;
-                productName.textContent = name;
-                productPrice.textContent = `${price} جنيه`;
-                productDiscount.textContent = `الخصم: ${discount}%`;
-                productSold.textContent = `عدد القطع المباعة: ${sold}`;
-                productLikes.textContent = `عدد الإعجابات: ${likes}`;
-                productReviews.textContent = reviews;
+            const discount = Math.floor(Math.random() * 20) + 1;
+            const sold = Math.floor(Math.random() * 1000);
+            const likes = Object.keys(favorites).length > 0 && favorites[name] ? Object.keys(favorites).length : Math.floor(Math.random() * 500);
 
-                if (favorites[name]) {
-                    likeBtn.classList.add('liked');
-                    likeBtn.querySelector('i').classList.replace('far', 'fas');
+            carouselImages.innerHTML = '';
+            images.forEach(src => {
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = name;
+                carouselImages.appendChild(img);
+            });
+
+            let currentImageIndex = 0;
+            function updateCarousel() {
+                const offset = -currentImageIndex * 100;
+                carouselImages.style.transform = `translateX(${offset}%)`;
+            }
+
+            prevImageBtn.onclick = () => {
+                currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+                updateCarousel();
+            };
+
+            nextImageBtn.onclick = () => {
+                currentImageIndex = (currentImageIndex + 1) % images.length;
+                updateCarousel();
+            };
+
+            productName.textContent = name;
+            productPrice.textContent = `${price} جنيه`;
+            productDiscount.textContent = `الخصم: ${discount}%`;
+            productSold.textContent = `عدد القطع المباعة: ${sold}`;
+            productLikes.textContent = `عدد الإعجابات: ${likes}`;
+            productReviews.textContent = reviews;
+
+            if (favorites[name]) {
+                likeBtn.classList.add('liked');
+                likeBtn.querySelector('i').classList.replace('far', 'fas');
+            } else {
+                likeBtn.classList.remove('liked');
+                likeBtn.querySelector('i').classList.replace('fas', 'far');
+            }
+
+            addToCartBtn.onclick = () => {
+                if (cart[name]) {
+                    cart[name].quantity += 1;
                 } else {
+                    cart[name] = { price: parseInt(price), quantity: 1 };
+                }
+                updateCartCount();
+                alert(`تمت إضافة "${name}" إلى السلة!`);
+            };
+
+            buyNowBtn.onclick = () => {
+                alert(`جارٍ الشراء الآن لـ "${name}" بقيمة ${price} جنيه!`);
+            };
+
+            likeBtn.onclick = () => {
+                if (favorites[name]) {
+                    delete favorites[name];
                     likeBtn.classList.remove('liked');
                     likeBtn.querySelector('i').classList.replace('fas', 'far');
+                } else {
+                    favorites[name] = true;
+                    likeBtn.classList.add('liked');
+                    likeBtn.querySelector('i').classList.replace('far', 'fas');
                 }
+                updateFavoritesCount();
+                productLikes.textContent = `عدد الإعجابات: ${Object.keys(favorites).length > 0 && favorites[name] ? Object.keys(favorites).length : likes}`;
+            };
 
-                addToCartBtn.onclick = () => {
-                    if (cart[name]) {
-                        cart[name].quantity += 1;
-                    } else {
-                        cart[name] = { price: parseInt(price), quantity: 1 };
-                    }
-                    updateCartCount();
-                    alert(`تمت إضافة "${name}" إلى السلة!`);
-                };
-
-                buyNowBtn.onclick = () => {
-                    alert(`جارٍ الشراء الآن لـ "${name}" بقيمة ${price} جنيه!`);
-                };
-
-                likeBtn.onclick = () => {
-                    if (favorites[name]) {
-                        delete favorites[name];
-                        likeBtn.classList.remove('liked');
-                        likeBtn.querySelector('i').classList.replace('fas', 'far');
-                    } else {
-                        favorites[name] = true;
-                        likeBtn.classList.add('liked');
-                        likeBtn.querySelector('i').classList.replace('far', 'fas');
-                    }
-                    updateFavoritesCount();
-                    productLikes.textContent = `عدد الإعجابات: ${Object.keys(favorites).length > 0 && favorites[name] ? Object.keys(favorites).length : likes}`;
-                };
-
-                productModal.classList.add('open');
-            });
-        });
+            updateCarousel();
+            productModal.classList.add('open');
+        }
 
         document.querySelector('#close-details').addEventListener('click', () => {
             document.querySelector('#product-details-modal').classList.remove('open');
@@ -1610,13 +1036,9 @@
         const loggedInSection = document.querySelector('#logged-in');
         const loginFormContainer = document.querySelector('#login-form-container');
         const signupFormContainer = document.querySelector('#signup-form-container');
-        const showSignup = document.querySelector('#show-signup');
-        const showLogin = document.querySelector('#show-login');
         const loginForm = document.querySelector('#login-form');
         const signupForm = document.querySelector('#signup-form');
         const logoutBtn = document.querySelector('#logout-btn');
-        const userName = document.querySelector('#user-name');
-        const userEmail = document.querySelector('#user-email');
 
         if (currentUser) loadUserData();
 
@@ -1627,13 +1049,13 @@
 
         closeUser.addEventListener('click', () => userModal.classList.remove('open'));
 
-        showSignup.addEventListener('click', (e) => {
+        document.querySelector('#show-signup').addEventListener('click', (e) => {
             e.preventDefault();
             loginFormContainer.style.display = 'none';
             signupFormContainer.style.display = 'block';
         });
 
-        showLogin.addEventListener('click', (e) => {
+        document.querySelector('#show-login').addEventListener('click', (e) => {
             e.preventDefault();
             signupFormContainer.style.display = 'none';
             loginFormContainer.style.display = 'block';
@@ -1690,8 +1112,8 @@
                 loggedInSection.style.display = 'block';
                 loginFormContainer.style.display = 'none';
                 signupFormContainer.style.display = 'none';
-                userName.textContent = currentUser.name;
-                userEmail.textContent = currentUser.email;
+                document.querySelector('#user-name').textContent = currentUser.name;
+                document.querySelector('#user-email').textContent = currentUser.email;
             } else {
                 loggedInSection.style.display = 'none';
                 loginFormContainer.style.display = 'block';
@@ -1716,51 +1138,145 @@
             }
         }
 
-        // Newsletter Form Submission
-        document.querySelector('.newsletter form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('تم الاشتراك بنجاح!');
+        // Admin Functionality
+        const adminIcon = document.querySelector('.admin-icon');
+        const adminModal = document.querySelector('#admin-modal');
+        const closeAdmin = document.querySelector('#close-admin');
+        const addProductForm = document.querySelector('#add-product-form');
+        const editProductForm = document.querySelector('#edit-product-form');
+        const editProductSelect = document.querySelector('#edit-product-select');
+        const productsContainer = document.querySelector('#products-container');
+        const adminPasswordSection = document.querySelector('#admin-password-section');
+        const editProductFormContainer = document.querySelector('#edit-product-form-container');
+        const verifyPasswordBtn = document.querySelector('#verify-password');
+        const adminPasswordInput = document.querySelector('#admin-password');
+        const SECRET_CODE = '2080100050';
+
+        adminIcon.addEventListener('click', () => {
+            adminModal.classList.add('open');
+            adminPasswordSection.style.display = 'block';
+            editProductFormContainer.style.display = 'none';
         });
 
-        // Scroll to Top
-        window.addEventListener('scroll', () => {
-            const scrollTop = document.createElement('a');
-            scrollTop.id = 'scroll-top';
-            scrollTop.href = '#top';
-            scrollTop.innerHTML = '↑';
-            if (window.scrollY > 200) {
-                if (!document.getElementById('scroll-top')) {
-                    document.body.appendChild(scrollTop);
-                }
-                scrollTop.style.display = 'block';
+        closeAdmin.addEventListener('click', () => {
+            adminModal.classList.remove('open');
+            adminPasswordInput.value = '';
+        });
+
+        verifyPasswordBtn.addEventListener('click', () => {
+            if (adminPasswordInput.value === SECRET_CODE) {
+                adminPasswordSection.style.display = 'none';
+                editProductFormContainer.style.display = 'block';
+                populateEditProductSelect();
             } else {
-                if (document.getElementById('scroll-top')) {
-                    scrollTop.style.display = 'none';
-                }
+                alert('الرقم السري غير صحيح!');
             }
         });
 
-        document.getElementById('scroll-top')?.addEventListener('click', function(e) {
+        addProductForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            const name = document.querySelector('#add-product-name').value;
+            const price = document.querySelector('#add-product-price').value;
+            const type = document.querySelector('#add-product-type').value;
+            const image = document.querySelector('#add-product-image').value;
+            const reviews = document.querySelector('#add-product-reviews').value;
+
+            const newProduct = document.createElement('div');
+            newProduct.classList.add('product-card');
+            newProduct.dataset.name = name;
+            newProduct.dataset.price = price;
+            newProduct.dataset.type = type;
+            newProduct.innerHTML = `
+                <img src="${image}" alt="${name}">
+                <div class="product-info">
+                    <h3>${name}</h3>
+                    <p class="price">${price} جنيه</p>
+                    <p class="reviews">${reviews}</p>
+                </div>
+                <div class="buttons">
+                    <button class="add-to-chart">إضافة إلى السلة</button>
+                    <button class="buy-now">اشترِ الآن</button>
+                    <button class="like-btn" data-name="${name}"><i class="far fa-heart"></i></button>
+                </div>
+            `;
+
+            productsContainer.appendChild(newProduct);
+            updateProductsDisplay();
+            rebindProductEvents();
+            addProductForm.reset();
+            alert(`تم إضافة "${name}" بنجاح!`);
         });
 
-        // Toggle Dark Mode
-        const modeToggle = document.querySelector('.mode-toggle');
-        if (localStorage.getItem('theme') === 'dark') {
-            document.body.classList.add('dark-mode');
+        function populateEditProductSelect() {
+            editProductSelect.innerHTML = '<option value="">اختر منتجًا للتعديل</option>';
+            const products = document.querySelectorAll('.product-card');
+            products.forEach(product => {
+                const option = document.createElement('option');
+                option.value = product.dataset.name;
+                option.textContent = product.dataset.name;
+                editProductSelect.appendChild(option);
+            });
         }
-        modeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+
+        editProductSelect.addEventListener('change', () => {
+            const selectedName = editProductSelect.value;
+            if (selectedName) {
+                const product = Array.from(document.querySelectorAll('.product-card')).find(p => p.dataset.name === selectedName);
+                document.querySelector('#edit-product-name').value = product.dataset.name;
+                document.querySelector('#edit-product-price').value = product.dataset.price;
+                document.querySelector('#edit-product-type').value = product.dataset.type || '';
+                document.querySelector('#edit-product-image').value = product.querySelector('img').src;
+                document.querySelector('#edit-product-reviews').value = product.querySelector('.reviews').textContent;
+            }
+        });
+
+        editProductForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const oldName = editProductSelect.value;
+            const newName = document.querySelector('#edit-product-name').value;
+            const price = document.querySelector('#edit-product-price').value;
+            const type = document.querySelector('#edit-product-type').value;
+            const image = document.querySelector('#edit-product-image').value;
+            const reviews = document.querySelector('#edit-product-reviews').value;
+
+            const product = Array.from(document.querySelectorAll('.product-card')).find(p => p.dataset.name === oldName);
+            if (product) {
+                product.dataset.name = newName;
+                product.dataset.price = price;
+                product.dataset.type = type;
+                product.querySelector('img').src = image;
+                product.querySelector('h3').textContent = newName;
+                product.querySelector('.price').textContent = `${price} جنيه`;
+                product.querySelector('.reviews').textContent = reviews;
+                product.querySelector('.like-btn').dataset.name = newName;
+
+                if (oldName !== newName) {
+                    if (favorites[oldName]) {
+                        favorites[newName] = favorites[oldName];
+                        delete favorites[oldName];
+                        updateFavoritesCount();
+                    }
+                    if (cart[oldName]) {
+                        cart[newName] = cart[oldName];
+                        delete cart[oldName];
+                        updateCartCount();
+                    }
+                }
+
+                updateProductsDisplay();
+                rebindProductEvents();
+                editProductForm.reset();
+                populateEditProductSelect();
+                alert(`تم تعديل "${newName}" بنجاح!`);
+            }
         });
 
         // Products Display Options and Pagination
         const itemsPerPageSelect = document.querySelector('#items-per-page');
         const columnsPerRowSelect = document.querySelector('#columns-per-row');
-        const productsContainer = document.querySelector('#products-container');
         const paginationContainer = document.querySelector('#pagination');
         let currentPage = 1;
+        let currentFilter = null;
 
         itemsPerPageSelect.addEventListener('change', () => {
             currentPage = 1;
@@ -1772,13 +1288,47 @@
             updateProductsDisplay();
         });
 
-        function updateProductsDisplay() {
+        document.querySelector('#home-filter').addEventListener('click', () => {
+            currentFilter = null;
+            currentPage = 1;
+            updateProductsDisplay();
+            categories.classList.remove('open');
+        });
+
+        document.querySelector('#shoes-filter').addEventListener('click', () => {
+            currentFilter = 'shoe';
+            currentPage = 1;
+            updateProductsDisplay();
+            categories.classList.remove('open');
+        });
+
+        document.querySelector('#bags-filter').addEventListener('click', () => {
+            currentFilter = 'bag';
+            currentPage = 1;
+            updateProductsDisplay();
+            categories.classList.remove('open');
+        });
+
+        function updateProductsDisplay(searchQuery = '') {
             const itemsPerPage = parseInt(itemsPerPageSelect.value);
             const columnsPerRow = parseInt(columnsPerRowSelect.value);
             const allProducts = Array.from(document.querySelectorAll('.product-card'));
-            const totalItems = allProducts.length;
+            let filteredProducts = allProducts;
+
+            if (searchQuery) {
+                filteredProducts = allProducts.filter(product => 
+                    product.dataset.name.toLowerCase().includes(searchQuery)
+                );
+            } else if (currentFilter) {
+                filteredProducts = allProducts.filter(product => 
+                    product.dataset.type === currentFilter
+                );
+            }
+
+            const totalItems = filteredProducts.length;
             const totalPages = Math.ceil(totalItems / itemsPerPage);
 
+            // تعيين عدد الأعمدة ديناميكيًا للشاشات الكبيرة فقط
             productsContainer.style.gridTemplateColumns = `repeat(${columnsPerRow}, minmax(250px, 1fr))`;
 
             allProducts.forEach(product => product.style.display = 'none');
@@ -1786,7 +1336,7 @@
             const start = (currentPage - 1) * itemsPerPage;
             const end = Math.min(start + itemsPerPage, totalItems);
             for (let i = start; i < end; i++) {
-                allProducts[i].style.display = 'block';
+                filteredProducts[i].style.display = 'block';
             }
 
             paginationContainer.innerHTML = '';
@@ -1796,108 +1346,88 @@
                 if (i === currentPage) button.classList.add('active');
                 button.addEventListener('click', () => {
                     currentPage = i;
-                    updateProductsDisplay();
+                    updateProductsDisplay(searchQuery);
                 });
                 paginationContainer.appendChild(button);
             }
         }
 
-        // Initial display
-        updateProductsDisplay();
-
-        // Rebind events after display update
+        // Rebind Product Events
         function rebindProductEvents() {
             document.querySelectorAll('.product-card').forEach(card => {
                 card.removeEventListener('click', handleProductClick);
                 card.addEventListener('click', handleProductClick);
             });
+
+            document.querySelectorAll('.add-to-chart').forEach(button => {
+                button.removeEventListener('click', addToCartHandler);
+                button.addEventListener('click', addToCartHandler);
+            });
+
+            document.querySelectorAll('.buy-now').forEach(button => {
+                button.removeEventListener('click', buyNowHandler);
+                button.addEventListener('click', buyNowHandler);
+            });
+
+            document.querySelectorAll('.like-btn').forEach(button => {
+                button.removeEventListener('click', likeHandler);
+                button.addEventListener('click', likeHandler);
+            });
         }
 
-        function handleProductClick(e) {
-            if (e.target.closest('.buttons')) return;
-
-            const productModal = document.querySelector('#product-details-modal');
-            const productImage = document.querySelector('#product-details-image');
-            const productName = document.querySelector('#product-details-name');
-            const productPrice = document.querySelector('#product-details-price');
-            const productDiscount = document.querySelector('#product-details-discount');
-            const productSold = document.querySelector('#product-details-sold');
-            const productLikes = document.querySelector('#product-details-likes');
-            const productReviews = document.querySelector('#product-details-reviews');
-            const addToCartBtn = document.querySelector('#product-details-add-to-cart');
-            const buyNowBtn = document.querySelector('#product-details-buy-now');
-            const likeBtn = document.querySelector('#product-details-like');
-
-            const name = this.dataset.name;
-            const price = this.dataset.price;
-            const imageSrc = this.querySelector('img').src;
-            const reviews = this.querySelector('.reviews').textContent;
-
-            const discount = Math.floor(Math.random() * 20) + 1;
-            const sold = Math.floor(Math.random() * 1000);
-            const likes = Object.keys(favorites).length > 0 && favorites[name] ? Object.keys(favorites).length : Math.floor(Math.random() * 500);
-
-            productImage.src = imageSrc;
-            productName.textContent = name;
-            productPrice.textContent = `${price} جنيه`;
-            productDiscount.textContent = `الخصم: ${discount}%`;
-            productSold.textContent = `عدد القطع المباعة: ${sold}`;
-            productLikes.textContent = `عدد الإعجابات: ${likes}`;
-            productReviews.textContent = reviews;
-
-            if (favorites[name]) {
-                likeBtn.classList.add('liked');
-                likeBtn.querySelector('i').classList.replace('far', 'fas');
+        function addToCartHandler() {
+            const productCard = this.closest('.product-card');
+            const productName = productCard.dataset.name;
+            const productPrice = parseInt(productCard.dataset.price);
+            if (cart[productName]) {
+                cart[productName].quantity += 1;
             } else {
-                likeBtn.classList.remove('liked');
-                likeBtn.querySelector('i').classList.replace('fas', 'far');
+                cart[productName] = { price: productPrice, quantity: 1 };
             }
-
-            addToCartBtn.onclick = () => {
-                if (cart[name]) {
-                    cart[name].quantity += 1;
-                } else {
-                    cart[name] = { price: parseInt(price), quantity: 1 };
-                }
-                updateCartCount();
-                alert(`تمت إضافة "${name}" إلى السلة!`);
-            };
-
-            buyNowBtn.onclick = () => {
-                alert(`جارٍ الشراء الآن لـ "${name}" بقيمة ${price} جنيه!`);
-            };
-
-            likeBtn.onclick = () => {
-                if (favorites[name]) {
-                    delete favorites[name];
-                    likeBtn.classList.remove('liked');
-                    likeBtn.querySelector('i').classList.replace('fas', 'far');
-                } else {
-                    favorites[name] = true;
-                    likeBtn.classList.add('liked');
-                    likeBtn.querySelector('i').classList.replace('far', 'fas');
-                }
-                updateFavoritesCount();
-                productLikes.textContent = `عدد الإعجابات: ${Object.keys(favorites).length > 0 && favorites[name] ? Object.keys(favorites).length : likes}`;
-            };
-
-            productModal.classList.add('open');
+            updateCartCount();
+            alert(`تمت إضافة "${productName}" إلى السلة بقيمة ${productPrice} جنيه!`);
         }
 
-        itemsPerPageSelect.addEventListener('change', () => {
-            currentPage = 1;
-            updateProductsDisplay();
-            rebindProductEvents();
-        });
+        function buyNowHandler() {
+            const productCard = this.closest('.product-card');
+            const productName = productCard.dataset.name;
+            const productPrice = parseInt(productCard.dataset.price);
+            alert(`جارٍ الشراء الآن لـ "${productName}" بقيمة ${productPrice} جنيه!`);
+        }
 
-        columnsPerRowSelect.addEventListener('change', () => {
-            currentPage = 1;
-            updateProductsDisplay();
-            rebindProductEvents();
-        });
+        function likeHandler() {
+            const productName = this.dataset.name;
+            if (favorites[productName]) {
+                delete favorites[productName];
+                this.classList.remove('liked');
+                this.querySelector('i').classList.replace('fas', 'far');
+            } else {
+                favorites[productName] = true;
+                this.classList.add('liked');
+                this.querySelector('i').classList.replace('far', 'fas');
+            }
+            updateFavoritesCount();
+        }
 
-        // Initial binding of product events
+        // Initial Setup
+        updateProductsDisplay();
         rebindProductEvents();
+
+        // Newsletter Form
+        document.querySelector('.newsletter form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('تم الاشتراك بنجاح!');
+        });
+
+        // Dark Mode Toggle
+        const modeToggle = document.querySelector('.mode-toggle');
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+        modeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        });
     </script>
 </body>
 </html>
